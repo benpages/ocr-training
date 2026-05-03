@@ -1,464 +1,1157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OCR Race Plan — May 3→16</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0d0d0d;color:#ddd;font-family:'Barlow',sans-serif;font-size:14px}
-.header{background:#0d0d0d;border-bottom:3px solid #e63c1e;padding:18px 24px 14px;position:sticky;top:0;z-index:100}
-.header h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:30px;text-transform:uppercase;letter-spacing:.05em;color:#fff}
-.header .meta{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:#e63c1e;margin-top:2px}
-.tabs{display:flex;gap:0;background:#0d0d0d;border-bottom:1px solid #222;padding:0 24px}
-.tab{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;cursor:pointer;border:none;background:transparent;color:#555;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .15s}
-.tab:hover{color:#aaa}
-.tab.active{color:#e63c1e;border-bottom-color:#e63c1e}
-.panel{display:none;padding:20px 24px;max-width:860px}
-.panel.active{display:block}
-.week-sep{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#444;margin:20px 0 8px;padding-bottom:4px;border-bottom:1px solid #1a1a1a}
-.week-sep:first-child{margin-top:0}
-.day{background:#111;border:1px solid #1e1e1e;border-left:4px solid #1e1e1e;margin-bottom:5px;cursor:pointer;transition:background .12s,border-left-color .12s}
-.day:hover{background:#151515}
-.day.run{border-left-color:#e63c1e}
-.day.gym{border-left-color:#2a7fff}
-.day.mixed{border-left-color:#f5a623}
-.day.recovery{border-left-color:#52b788}
-.day.race{border-left-color:#ffd700;background:#120f00}
-.day-header{display:grid;grid-template-columns:100px 1fr auto;gap:10px;align-items:center;padding:11px 14px}
-.day-date{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.04em;color:#fff}
-.day-dow{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.1em;margin-top:1px}
-.day-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.04em;color:#e8e8e0;line-height:1.2}
-.day-sub{font-size:12px;color:#555;margin-top:2px}
-.badge{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px;white-space:nowrap}
-.b-run{background:#1a0500;color:#e63c1e;border:1px solid #300a00}
-.b-gym{background:#010d1f;color:#4a9fff;border:1px solid #051830}
-.b-mixed{background:#130e00;color:#f5a623;border:1px solid #251c00}
-.b-rest{background:#050d08;color:#52b788;border:1px solid #0d2018}
-.b-race{background:#1a1400;color:#ffd700;border:1px solid #3a3000}
-.day-detail{display:none;padding:0 14px 14px;border-top:1px solid #1e1e1e}
-.day.open .day-detail{display:block}
-.dl{margin-top:12px}
-.dl-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#e63c1e;margin-bottom:5px}
-.dl-content{font-size:13px;color:#999;line-height:1.7}
-.dl-content strong{color:#ddd;font-weight:600}
-.dl-content em{color:#f5a623;font-style:normal}
-.timing-note{display:inline-block;background:#1a0d00;border:1px solid #2a1a00;color:#f5a623;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:2px;margin-top:10px;margin-bottom:2px}
-.nut-section{margin-bottom:24px}
-.nt{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;text-transform:uppercase;letter-spacing:.08em;color:#fff;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #1e1e1e}
-.nt span{color:#e63c1e}
-.nut-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.nut-card{background:#111;border:1px solid #1e1e1e;padding:14px;margin-bottom:10px}
-.nut-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#e63c1e;margin-bottom:8px}
-.nut-row{font-size:13px;color:#888;padding:4px 0;border-bottom:1px solid #181818;line-height:1.5}
-.nut-row:last-child{border:none}
-.nut-row strong{color:#ccc}
-.race-day-box{background:#120f00;border:2px solid #ffd700;padding:16px;margin-top:10px}
-.race-day-box .nut-card-title{color:#ffd700}
-.rec-card{background:#111;border:1px solid #1e1e1e;border-left:3px solid #52b788;padding:14px 16px;margin-bottom:8px}
-.rec-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:#ddd;margin-bottom:6px}
-.rec-text{font-size:13px;color:#888;line-height:1.7}
-.rec-text strong{color:#ccc}
-.warn{background:#1a0900;border:1px solid #3a1800;padding:10px 14px;font-size:13px;color:#f5a623;line-height:1.6;margin-top:12px;border-radius:2px}
-.hr-ref{background:#0d1a0d;border:1px solid #1a3a1a;padding:12px 16px;margin-bottom:16px}
-.hr-ref-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#52b788;margin-bottom:8px}
-.hr-row{display:flex;justify-content:space-between;font-size:12px;color:#888;padding:3px 0;border-bottom:1px solid #141a14}
-.hr-row:last-child{border:none}
-.hr-row span:last-child{color:#ddd;font-weight:600;font-family:'Barlow Condensed',sans-serif;font-size:13px}
-</style>
-</head>
-<body>
-<div class="header">
-  <h1>OCR Race Plan — May 3→16</h1>
-  <div class="meta">13 Days · ~8km · 30+ Obstacles · Goal: Time · Max HR: 194 bpm</div>
-</div>
-<div class="tabs">
-  <button class="tab active" onclick="showTab('schedule',this)">Schedule</button>
-  <button class="tab" onclick="showTab('nutrition',this)">Nutrition</button>
-  <button class="tab" onclick="showTab('recovery',this)">Recovery</button>
-</div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>OCR Race Plan — May 3→16</title>
+		<style>
+			@import url(https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap);
+			.header,
+			.tabs,
+			body {
+				background: #0d0d0d;
+			}
+			.day,
+			.tab {
+				cursor: pointer;
+			}
+			.day-date,
+			.header .meta,
+			.header h1,
+			.tab,
+			.week-sep {
+				text-transform: uppercase;
+				font-family: "Barlow Condensed", sans-serif;
+			}
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			body {
+				color: #ddd;
+				font-family: Barlow, sans-serif;
+				font-size: 17px;
+			}
+			.header {
+				border-bottom: 3px solid #e63c1e;
+				padding: 22px 28px 16px;
+				position: sticky;
+				top: 0;
+				z-index: 100;
+			}
+			.header h1 {
+				font-weight: 900;
+				font-size: 36px;
+				letter-spacing: 0.05em;
+				color: #fff;
+			}
+			.header .meta {
+				font-weight: 600;
+				font-size: 15px;
+				letter-spacing: 0.15em;
+				color: #e63c1e;
+				margin-top: 4px;
+			}
+			.tabs {
+				display: flex;
+				gap: 0;
+				border-bottom: 1px solid #222;
+				padding: 0 28px;
+			}
+			.tab {
+				font-weight: 700;
+				font-size: 15px;
+				letter-spacing: 0.1em;
+				padding: 12px 20px;
+				border: none;
+				background: 0 0;
+				color: #555;
+				border-bottom: 3px solid transparent;
+				margin-bottom: -1px;
+				transition: 0.15s;
+			}
+			.tab:hover {
+				color: #aaa;
+			}
+			.tab.active {
+				color: #e63c1e;
+				border-bottom-color: #e63c1e;
+			}
+			.panel {
+				display: none;
+				padding: 24px 28px;
+				max-width: 860px;
+			}
+			.day.open .day-detail,
+			.panel.active {
+				display: block;
+			}
+			.week-sep {
+				font-weight: 900;
+				font-size: 13px;
+				letter-spacing: 0.25em;
+				color: #444;
+				margin: 24px 0 10px;
+				padding-bottom: 4px;
+				border-bottom: 1px solid #1a1a1a;
+			}
+			.day,
+			.dl-label {
+				margin-bottom: 6px;
+			}
+			.week-sep:first-child {
+				margin-top: 0;
+			}
+			.day {
+				background: #111;
+				border: 1px solid #1e1e1e;
+				border-left: 4px solid #1e1e1e;
+				transition:
+					background 0.12s,
+					border-left-color 0.12s;
+			}
+			.day:hover {
+				background: #151515;
+			}
+			.day.run {
+				border-left-color: #e63c1e;
+			}
+			.day.gym {
+				border-left-color: #2a7fff;
+			}
+			.day.mixed {
+				border-left-color: #f5a623;
+			}
+			.day.recovery {
+				border-left-color: #52b788;
+			}
+			.day.race {
+				border-left-color: gold;
+				background: #120f00;
+			}
+			.day-header {
+				display: grid;
+				grid-template-columns: 110px 1fr auto;
+				gap: 12px;
+				align-items: center;
+				padding: 14px 16px;
+			}
+			.day-date {
+				font-weight: 700;
+				font-size: 18px;
+				letter-spacing: 0.04em;
+				color: #fff;
+			}
+			.day-dow {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 600;
+				font-size: 13px;
+				color: #555;
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+				margin-top: 2px;
+			}
+			.badge,
+			.day-title,
+			.dl-label {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 700;
+				text-transform: uppercase;
+			}
+			.day-title {
+				font-size: 19px;
+				letter-spacing: 0.04em;
+				color: #e8e8e0;
+				line-height: 1.3;
+			}
+			.day-sub {
+				font-size: 14px;
+				color: #555;
+				margin-top: 3px;
+			}
+			.badge {
+				font-size: 12px;
+				letter-spacing: 0.1em;
+				padding: 4px 10px;
+				border-radius: 2px;
+				white-space: nowrap;
+			}
+			.b-run {
+				background: #1a0500;
+				color: #e63c1e;
+				border: 1px solid #300a00;
+			}
+			.b-gym {
+				background: #010d1f;
+				color: #4a9fff;
+				border: 1px solid #051830;
+			}
+			.b-mixed {
+				background: #130e00;
+				color: #f5a623;
+				border: 1px solid #251c00;
+			}
+			.b-rest {
+				background: #050d08;
+				color: #52b788;
+				border: 1px solid #0d2018;
+			}
+			.b-race,
+			.race-day-box .nut-card-title {
+				color: gold;
+			}
+			.b-race {
+				background: #1a1400;
+				border: 1px solid #3a3000;
+			}
+			.day-detail {
+				display: none;
+				padding: 0 16px 16px;
+				border-top: 1px solid #1e1e1e;
+			}
+			.dl {
+				margin-top: 14px;
+			}
+			.dl-label {
+				font-size: 13px;
+				letter-spacing: 0.18em;
+				color: #e63c1e;
+			}
+			.nt,
+			.timing-note {
+				letter-spacing: 0.08em;
+				font-family: "Barlow Condensed", sans-serif;
+			}
+			.dl-content {
+				font-size: 15px;
+				color: #999;
+				line-height: 1.75;
+			}
+			.dl-content strong {
+				color: #ddd;
+				font-weight: 600;
+			}
+			.dl-content em {
+				color: #f5a623;
+				font-style: normal;
+			}
+			.timing-note {
+				display: inline-block;
+				background: #1a0d00;
+				border: 1px solid #2a1a00;
+				color: #f5a623;
+				font-size: 13px;
+				font-weight: 600;
+				text-transform: uppercase;
+				padding: 3px 9px;
+				border-radius: 2px;
+				margin-top: 12px;
+				margin-bottom: 4px;
+			}
+			.nut-section {
+				margin-bottom: 26px;
+			}
+			.nt {
+				font-weight: 900;
+				font-size: 19px;
+				text-transform: uppercase;
+				color: #fff;
+				margin-bottom: 14px;
+				padding-bottom: 6px;
+				border-bottom: 2px solid #1e1e1e;
+			}
+			.hr-ref-title,
+			.nut-card-title,
+			.rec-title {
+				font-weight: 700;
+				text-transform: uppercase;
+			}
+			.nt span {
+				color: #e63c1e;
+			}
+			.nut-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 12px;
+			}
+			.nut-card {
+				background: #111;
+				border: 1px solid #1e1e1e;
+				padding: 16px;
+				margin-bottom: 12px;
+			}
+			.nut-card-title {
+				font-family: "Barlow Condensed", sans-serif;
+				font-size: 14px;
+				letter-spacing: 0.15em;
+				color: #e63c1e;
+				margin-bottom: 10px;
+			}
+			.nut-row {
+				font-size: 15px;
+				color: #888;
+				padding: 5px 0;
+				border-bottom: 1px solid #181818;
+				line-height: 1.6;
+			}
+			.hr-row span:last-child,
+			.rec-title {
+				color: #ddd;
+				font-family: "Barlow Condensed", sans-serif;
+			}
+			.hr-row:last-child,
+			.nut-row:last-child {
+				border: none;
+			}
+			.nut-row strong,
+			.rec-text strong {
+				color: #ccc;
+			}
+			.race-day-box {
+				background: #120f00;
+				border: 2px solid gold;
+				padding: 18px;
+				margin-top: 12px;
+			}
+			.rec-card {
+				background: #111;
+				border: 1px solid #1e1e1e;
+				border-left: 3px solid #52b788;
+				padding: 16px 18px;
+				margin-bottom: 10px;
+			}
+			.rec-title {
+				font-size: 16px;
+				letter-spacing: 0.08em;
+				margin-bottom: 6px;
+			}
+			.rec-text {
+				font-size: 15px;
+				color: #888;
+				line-height: 1.75;
+			}
+			.warn {
+				background: #1a0900;
+				border: 1px solid #3a1800;
+				padding: 12px 16px;
+				font-size: 15px;
+				color: #f5a623;
+				line-height: 1.7;
+				margin-top: 14px;
+				border-radius: 2px;
+			}
+			.hr-ref {
+				background: #0d1a0d;
+				border: 1px solid #1a3a1a;
+				padding: 14px 18px;
+				margin-bottom: 18px;
+			}
+			.hr-ref-title {
+				font-family: "Barlow Condensed", sans-serif;
+				font-size: 13px;
+				letter-spacing: 0.2em;
+				color: #52b788;
+				margin-bottom: 10px;
+			}
+			.hr-row {
+				display: flex;
+				justify-content: space-between;
+				font-size: 14px;
+				color: #888;
+				padding: 4px 0;
+				border-bottom: 1px solid #141a14;
+			}
+			.hr-row span:last-child {
+				font-weight: 600;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<h1>OCR Race Plan — May 3→16</h1>
+			<div class="meta">
+				13 Days · ~8km · 30+ Obstacles · Goal: Time · Max HR: 194 bpm
+			</div>
+		</div>
+		<div class="tabs">
+			<button class="tab active" onclick="showTab('schedule', this)">
+				Schedule
+			</button>
+			<button class="tab" onclick="showTab('nutrition', this)">
+				Nutrition
+			</button>
+			<button class="tab" onclick="showTab('recovery', this)">Recovery</button>
+		</div>
 
-<div id="schedule" class="panel active">
+		<div id="schedule" class="panel active">
+			<div class="hr-ref">
+				<div class="hr-ref-title">Your HR Zones — Max 194 bpm</div>
+				<div class="hr-row">
+					<span>Easy / Recovery</span><span>&lt;116 bpm</span>
+				</div>
+				<div class="hr-row">
+					<span>Aerobic / Tempo cruise</span><span>146–155 bpm</span>
+				</div>
+				<div class="hr-row">
+					<span>Threshold intervals</span><span>155–165 bpm</span>
+				</div>
+				<div class="hr-row">
+					<span>Hard push / race effort</span><span>165–175 bpm</span>
+				</div>
+				<div class="hr-row"><span>Sprint / max</span><span>175+ bpm</span></div>
+			</div>
 
-<div class="hr-ref">
-  <div class="hr-ref-title">Your HR Zones — Max 194 bpm</div>
-  <div class="hr-row"><span>Easy / Recovery</span><span>&lt;116 bpm</span></div>
-  <div class="hr-row"><span>Aerobic / Tempo cruise</span><span>146–155 bpm</span></div>
-  <div class="hr-row"><span>Threshold intervals</span><span>155–165 bpm</span></div>
-  <div class="hr-row"><span>Hard push / race effort</span><span>165–175 bpm</span></div>
-  <div class="hr-row"><span>Sprint / max</span><span>175+ bpm</span></div>
-</div>
+			<div class="week-sep">Week 1 — Build &amp; Sharpen · May 4–10</div>
 
-<div class="week-sep">Week 1 — Build &amp; Sharpen · May 4–10</div>
+			<div class="day run" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 4</div>
+						<div class="day-dow">Sunday</div>
+					</div>
+					<div>
+						<div class="day-title">Threshold Intervals — Baseline</div>
+						<div class="day-sub">Before 11AM meetings</div>
+					</div>
+					<div class="badge b-run">Run</div>
+				</div>
+				<div class="day-detail">
+					<div class="timing-note">Target: 7:30–9:30AM</div>
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							Warm up 1km easy — stay under <strong>116 bpm</strong>.<br />
+							<strong>6 × 600m at 155–165 bpm.</strong> Recovery jog between
+							reps — don't start the next until HR is back under
+							<strong>130 bpm</strong>. If 90 sec isn't enough, take more.<br />
+							Cool down 1km easy. <em>Total ~8–9km, ~55 min.</em>
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">This is your baseline</div>
+						<div class="dl-content">
+							Log your pace at 155–165 bpm today. On May 11 you'll run the exact
+							same session — goal is faster splits at the same HR. That gap is
+							one week of real fitness.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Garmin cue</div>
+						<div class="dl-content">
+							After each rep: note HR at the 60-sec mark of recovery. You want
+							it dropping <strong>20+ bpm</strong> in that window. If it's not,
+							you went out too hard.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day run" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 4</div><div class="day-dow">Sunday</div></div>
-    <div><div class="day-title">Threshold Intervals — Baseline</div><div class="day-sub">Before 11AM meetings</div></div>
-    <div class="badge b-run">Run</div>
-  </div>
-  <div class="day-detail">
-    <div class="timing-note">Target: 7:30–9:30AM</div>
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      Warm up 1km easy — stay under <strong>116 bpm</strong>.<br>
-      <strong>6 × 600m at 155–165 bpm.</strong> Recovery jog between reps — don't start the next until HR is back under <strong>130 bpm</strong>. If 90 sec isn't enough, take more.<br>
-      Cool down 1km easy. <em>Total ~8–9km, ~55 min.</em>
-    </div></div>
-    <div class="dl"><div class="dl-label">This is your baseline</div><div class="dl-content">Log your pace at 155–165 bpm today. On May 11 you'll run the exact same session — goal is faster splits at the same HR. That gap is one week of real fitness.</div></div>
-    <div class="dl"><div class="dl-label">Garmin cue</div><div class="dl-content">After each rep: note HR at the 60-sec mark of recovery. You want it dropping <strong>20+ bpm</strong> in that window. If it's not, you went out too hard.</div></div>
-  </div>
-</div>
+			<div class="day gym" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 5</div>
+						<div class="day-dow">Monday</div>
+					</div>
+					<div>
+						<div class="day-title">Explosive Power + Grip Endurance</div>
+						<div class="day-sub">BTCTA 6PM — morning free</div>
+					</div>
+					<div class="badge b-gym">Gym</div>
+				</div>
+				<div class="day-detail">
+					<div class="timing-note">Target: 7:00–8:30AM</div>
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							<strong>A. Plyometrics (20 min)</strong><br />
+							Box jumps 4×8 · Broad jumps 3×6 · Lateral bounds 3×8 each side<br /><br />
+							<strong>B. Outdoor area (25 min)</strong><br />
+							Monkey bars 5×full traverse · Dips 4×12<br />
+							After each monkey bar set:
+							<em>immediately sprint 100m.</em> Arrive at the obstacle with HR
+							elevated, complete it, sprint out. That's the race.<br /><br />
+							<strong>C. Grip burnout — always last (10 min)</strong><br />
+							Dead hang to failure × 3 sets → immediately farmer's carry to
+							failure → one final monkey bar traverse attempt. Grip already
+							cooked. This is exactly what obstacles 20–30 feel like.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day gym" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 5</div><div class="day-dow">Monday</div></div>
-    <div><div class="day-title">Explosive Power + Grip Endurance</div><div class="day-sub">BTCTA 6PM — morning free</div></div>
-    <div class="badge b-gym">Gym</div>
-  </div>
-  <div class="day-detail">
-    <div class="timing-note">Target: 7:00–8:30AM</div>
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      <strong>A. Plyometrics (20 min)</strong><br>
-      Box jumps 4×8 · Broad jumps 3×6 · Lateral bounds 3×8 each side<br><br>
-      <strong>B. Outdoor area (25 min)</strong><br>
-      Monkey bars 5×full traverse · Dips 4×12<br>
-      After each monkey bar set: <em>immediately sprint 100m.</em> Arrive at the obstacle with HR elevated, complete it, sprint out. That's the race.<br><br>
-      <strong>C. Grip burnout — always last (10 min)</strong><br>
-      Dead hang to failure × 3 sets → immediately farmer's carry to failure → one final monkey bar traverse attempt. Grip already cooked. This is exactly what obstacles 20–30 feel like.
-    </div></div>
-  </div>
-</div>
+			<div class="day run" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 6</div>
+						<div class="day-dow">Tuesday</div>
+					</div>
+					<div>
+						<div class="day-title">Tempo Run — Pace Guided</div>
+						<div class="day-sub">
+							LC 13-15 1PM · Peer Coaching 6PM — morning free
+						</div>
+					</div>
+					<div class="badge b-run">Run</div>
+				</div>
+				<div class="day-detail">
+					<div class="timing-note">Target: 8:00–9:15AM</div>
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							20 min easy warm-up — under <strong>116 bpm</strong>.<br />
+							<strong>20 min at 5:00–5:30/km pace.</strong> Pace-guided today,
+							not HR-guided. Your HR will likely land at 155–165 — fine. Hold
+							the pace even if HR climbs.<br />
+							10 min easy cool-down. <em>Total ~7–8km, ~50 min.</em>
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Why pace not HR</div>
+						<div class="dl-content">
+							Your race target is sub-5:30/km moving pace. Last year you ran
+							6:28/km moving without pushing. Your body needs to learn this
+							speed is sustainable. This is where that gap closes.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day run" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 6</div><div class="day-dow">Tuesday</div></div>
-    <div><div class="day-title">Tempo Run — Pace Guided</div><div class="day-sub">LC 13-15 1PM · Peer Coaching 6PM — morning free</div></div>
-    <div class="badge b-run">Run</div>
-  </div>
-  <div class="day-detail">
-    <div class="timing-note">Target: 8:00–9:15AM</div>
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      20 min easy warm-up — under <strong>116 bpm</strong>.<br>
-      <strong>20 min at 5:00–5:30/km pace.</strong> Pace-guided today, not HR-guided. Your HR will likely land at 155–165 — fine. Hold the pace even if HR climbs.<br>
-      10 min easy cool-down. <em>Total ~7–8km, ~50 min.</em>
-    </div></div>
-    <div class="dl"><div class="dl-label">Why pace not HR</div><div class="dl-content">Your race target is sub-5:30/km moving pace. Last year you ran 6:28/km moving without pushing. Your body needs to learn this speed is sustainable. This is where that gap closes.</div></div>
-  </div>
-</div>
+			<div class="day mixed" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 7</div>
+						<div class="day-dow">Wednesday</div>
+					</div>
+					<div>
+						<div class="day-title">Race Simulation Circuit</div>
+						<div class="day-sub">Full day available — The Money Session</div>
+					</div>
+					<div class="badge b-mixed">Mixed</div>
+				</div>
+				<div class="day-detail">
+					<div class="timing-note">Target: 9:00–10:15AM</div>
+					<div class="dl">
+						<div class="dl-label">Session — 2 Rounds</div>
+						<div class="dl-content">
+							<strong>2 rounds of:</strong><br />
+							→ Run 1 full loop (3.2km) — hold <strong>146–155 bpm</strong
+							><br />
+							→ On arrival: 10 dips + full monkey bar traverse + 10 burpees<br />
+							→ Immediately run 800m — push to <strong>165–175 bpm</strong
+							><br />
+							→ 90 sec standing rest. Repeat.<br /><br />
+							<em>Total: ~8km running + obstacle work, ~60 min.</em>
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Why 2 rounds</div>
+						<div class="dl-content">
+							Race is ~8km. 3 rounds would exceed race distance 9 days out. 2
+							rounds hits the same stimulus without digging a recovery hole
+							before taper week.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Key execution</div>
+						<div class="dl-content">
+							Run the 800m <em>immediately</em> after obstacle work — HR already
+							elevated. <strong>Do not pause to compose yourself.</strong> This
+							is the exact transition you're training. The discomfort is the
+							point.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Garmin check</div>
+						<div class="dl-content">
+							Loop average should stay at <strong>146–155 bpm</strong>. Above
+							155 on loop 1 means you'll blow up on round 2 — dial back early.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day mixed" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 7</div><div class="day-dow">Wednesday</div></div>
-    <div><div class="day-title">Race Simulation Circuit</div><div class="day-sub">Full day available — The Money Session</div></div>
-    <div class="badge b-mixed">Mixed</div>
-  </div>
-  <div class="day-detail">
-    <div class="timing-note">Target: 9:00–10:15AM</div>
-    <div class="dl"><div class="dl-label">Session — 2 Rounds</div><div class="dl-content">
-      <strong>2 rounds of:</strong><br>
-      → Run 1 full loop (3.2km) — hold <strong>146–155 bpm</strong><br>
-      → On arrival: 10 dips + full monkey bar traverse + 10 burpees<br>
-      → Immediately run 800m — push to <strong>165–175 bpm</strong><br>
-      → 90 sec standing rest. Repeat.<br><br>
-      <em>Total: ~8km running + obstacle work, ~60 min.</em>
-    </div></div>
-    <div class="dl"><div class="dl-label">Why 2 rounds</div><div class="dl-content">Race is ~8km. 3 rounds would exceed race distance 9 days out. 2 rounds hits the same stimulus without digging a recovery hole before taper week.</div></div>
-    <div class="dl"><div class="dl-label">Key execution</div><div class="dl-content">Run the 800m <em>immediately</em> after obstacle work — HR already elevated. <strong>Do not pause to compose yourself.</strong> This is the exact transition you're training. The discomfort is the point.</div></div>
-    <div class="dl"><div class="dl-label">Garmin check</div><div class="dl-content">Loop average should stay at <strong>146–155 bpm</strong>. Above 155 on loop 1 means you'll blow up on round 2 — dial back early.</div></div>
-  </div>
-</div>
+			<div class="day recovery" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 8</div>
+						<div class="day-dow">Thursday</div>
+					</div>
+					<div>
+						<div class="day-title">Active Recovery</div>
+						<div class="day-sub">Full day — let Wednesday settle</div>
+					</div>
+					<div class="badge b-rest">Recovery</div>
+				</div>
+				<div class="day-detail">
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							30 min easy walk or jog — hard cap at <strong>116 bpm</strong>. No
+							exceptions.<br />
+							20 min mobility: hip flexors, hamstrings, thoracic spine, shoulder
+							capsule.<br />
+							Foam roll calves, quads, IT band.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Mandatory</div>
+						<div class="dl-content">
+							Wednesday was your hardest session. This is where you absorb the
+							adaptation. Skipping this day does not make you fitter — it makes
+							you slower on race day.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day recovery" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 8</div><div class="day-dow">Thursday</div></div>
-    <div><div class="day-title">Active Recovery</div><div class="day-sub">Full day — let Wednesday settle</div></div>
-    <div class="badge b-rest">Recovery</div>
-  </div>
-  <div class="day-detail">
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      30 min easy walk or jog — hard cap at <strong>116 bpm</strong>. No exceptions.<br>
-      20 min mobility: hip flexors, hamstrings, thoracic spine, shoulder capsule.<br>
-      Foam roll calves, quads, IT band.
-    </div></div>
-    <div class="dl"><div class="dl-label">Mandatory</div><div class="dl-content">Wednesday was your hardest session. This is where you absorb the adaptation. Skipping this day does not make you fitter — it makes you slower on race day.</div></div>
-  </div>
-</div>
+			<div class="day run" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 9</div>
+						<div class="day-dow">Friday</div>
+					</div>
+					<div>
+						<div class="day-title">Sprint Repeats + Hill Sim</div>
+						<div class="day-sub">Full day available</div>
+					</div>
+					<div class="badge b-run">Run</div>
+				</div>
+				<div class="day-detail">
+					<div class="timing-note">Target: 9:00–10:30AM</div>
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							Warm up 1.5km easy — under <strong>116 bpm</strong>.<br /><br />
+							<strong>Hill sim at your ditch — 10 reps:</strong> All-out sprint
+							up, walk back, repeat. Target <strong>175+ bpm</strong> at the
+							top. Short but neuromuscular — fires fast-twitch hard.<br /><br />
+							<strong>Flat sprints: 8 × 200m at 175+ bpm.</strong> Full 2 min
+							rest between — HR back under <strong>130</strong> before each rep.
+							These are fast. Not jogging.<br /><br />
+							Cool down 1km easy. <em>Total ~45–55 min.</em>
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Rest between reps is non-negotiable</div>
+						<div class="dl-content">
+							Each 200m needs to be genuinely fast. Cutting rest turns this into
+							a tempo run — wrong stimulus entirely. Full 2 min, every time.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day run" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 9</div><div class="day-dow">Friday</div></div>
-    <div><div class="day-title">Sprint Repeats + Hill Sim</div><div class="day-sub">Full day available</div></div>
-    <div class="badge b-run">Run</div>
-  </div>
-  <div class="day-detail">
-    <div class="timing-note">Target: 9:00–10:30AM</div>
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      Warm up 1.5km easy — under <strong>116 bpm</strong>.<br><br>
-      <strong>Hill sim at your ditch — 10 reps:</strong> All-out sprint up, walk back, repeat. Target <strong>175+ bpm</strong> at the top. Short but neuromuscular — fires fast-twitch hard.<br><br>
-      <strong>Flat sprints: 8 × 200m at 175+ bpm.</strong> Full 2 min rest between — HR back under <strong>130</strong> before each rep. These are fast. Not jogging.<br><br>
-      Cool down 1km easy. <em>Total ~45–55 min.</em>
-    </div></div>
-    <div class="dl"><div class="dl-label">Rest between reps is non-negotiable</div><div class="dl-content">Each 200m needs to be genuinely fast. Cutting rest turns this into a tempo run — wrong stimulus entirely. Full 2 min, every time.</div></div>
-  </div>
-</div>
+			<div class="day gym" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 10</div>
+						<div class="day-dow">Saturday</div>
+					</div>
+					<div>
+						<div class="day-title">Strength + Carry Sim</div>
+						<div class="day-sub">Full day available</div>
+					</div>
+					<div class="badge b-gym">Gym</div>
+				</div>
+				<div class="day-detail">
+					<div class="timing-note">Target: 9:00–10:30AM</div>
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							<strong>Lower body power:</strong> Trap bar deadlift (or RDL) 4×5
+							heavy · Bulgarian split squat 3×8 · Step-up with knee drive
+							3×10<br /><br />
+							<strong>Carry sim — race specific:</strong> Farmer's carry 4×40m
+							heavy · Bear hug carry (sandbag or plate) 3×30m · Seated cable row
+							4×10<br /><br />
+							<strong>Grip burnout — always last:</strong> Dead hang to failure
+							× 3 sets → farmer's carry → monkey bar traverse. Same protocol as
+							May 5.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Note</div>
+						<div class="dl-content">
+							High weight, low reps on the strength work. Strength signal day,
+							not conditioning. <strong>Not to failure on legs</strong> — big
+							week 2 coming.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day gym" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 10</div><div class="day-dow">Saturday</div></div>
-    <div><div class="day-title">Strength + Carry Sim</div><div class="day-sub">Full day available</div></div>
-    <div class="badge b-gym">Gym</div>
-  </div>
-  <div class="day-detail">
-    <div class="timing-note">Target: 9:00–10:30AM</div>
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      <strong>Lower body power:</strong> Trap bar deadlift (or RDL) 4×5 heavy · Bulgarian split squat 3×8 · Step-up with knee drive 3×10<br><br>
-      <strong>Carry sim — race specific:</strong> Farmer's carry 4×40m heavy · Bear hug carry (sandbag or plate) 3×30m · Seated cable row 4×10<br><br>
-      <strong>Grip burnout — always last:</strong> Dead hang to failure × 3 sets → farmer's carry → monkey bar traverse. Same protocol as May 5.
-    </div></div>
-    <div class="dl"><div class="dl-label">Note</div><div class="dl-content">High weight, low reps on the strength work. Strength signal day, not conditioning. <strong>Not to failure on legs</strong> — big week 2 coming.</div></div>
-  </div>
-</div>
+			<div class="week-sep">Week 2 — Peak &amp; Taper · May 11–16</div>
 
-<div class="week-sep">Week 2 — Peak &amp; Taper · May 11–16</div>
+			<div class="day run" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 11</div>
+						<div class="day-dow">Sunday</div>
+					</div>
+					<div>
+						<div class="day-title">Threshold Intervals — Beat May 4</div>
+						<div class="day-sub">
+							NLP Live 11AM · Coaching 4:30PM · Peer Coaching 6PM — morning only
+						</div>
+					</div>
+					<div class="badge b-run">Run</div>
+				</div>
+				<div class="day-detail">
+					<div class="timing-note">Target: 7:30–9:15AM — hard stop</div>
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							Exact repeat: <strong>6 × 600m at 155–165 bpm</strong>, recovery
+							jog to under 130 between reps.<br />
+							Pull up May 4 Garmin data before you start. Beat every split at
+							the same HR.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">What to look for</div>
+						<div class="dl-content">
+							10–15 sec/km faster at the same 155–165 bpm = a week of real
+							fitness. That's what you're racing on in 5 days. The data will
+							show it.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day run" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 11</div><div class="day-dow">Sunday</div></div>
-    <div><div class="day-title">Threshold Intervals — Beat May 4</div><div class="day-sub">NLP Live 11AM · Coaching 4:30PM · Peer Coaching 6PM — morning only</div></div>
-    <div class="badge b-run">Run</div>
-  </div>
-  <div class="day-detail">
-    <div class="timing-note">Target: 7:30–9:15AM — hard stop</div>
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      Exact repeat: <strong>6 × 600m at 155–165 bpm</strong>, recovery jog to under 130 between reps.<br>
-      Pull up May 4 Garmin data before you start. Beat every split at the same HR.
-    </div></div>
-    <div class="dl"><div class="dl-label">What to look for</div><div class="dl-content">10–15 sec/km faster at the same 155–165 bpm = a week of real fitness. That's what you're racing on in 5 days. The data will show it.</div></div>
-  </div>
-</div>
+			<div class="day mixed" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 12</div>
+						<div class="day-dow">Monday</div>
+					</div>
+					<div>
+						<div class="day-title">Short Obstacle Speed Circuit</div>
+						<div class="day-sub">
+							LC 13-15 ends 2PM · Krista Kathleen 6PM — 2–5PM free
+						</div>
+					</div>
+					<div class="badge b-mixed">Mixed</div>
+				</div>
+				<div class="day-detail">
+					<div class="timing-note">Target: 2:00–3:00PM</div>
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							<strong>5 rounds:</strong><br />
+							→ 400m hard run — push to <strong>165–175 bpm</strong><br />
+							→ Monkey bar traverse + 8 dips + 8 burpees<br />
+							→ 60 sec rest<br /><br />
+							<em>~2km running + bodyweight. 45 min.</em>
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Key</div>
+						<div class="dl-content">
+							Arrive at the obstacle at <strong>165+ bpm</strong> on purpose. Go
+							straight into it. That's the race — train the transition, not just
+							the obstacle.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day mixed" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 12</div><div class="day-dow">Monday</div></div>
-    <div><div class="day-title">Short Obstacle Speed Circuit</div><div class="day-sub">LC 13-15 ends 2PM · Krista Kathleen 6PM — 2–5PM free</div></div>
-    <div class="badge b-mixed">Mixed</div>
-  </div>
-  <div class="day-detail">
-    <div class="timing-note">Target: 2:00–3:00PM</div>
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      <strong>5 rounds:</strong><br>
-      → 400m hard run — push to <strong>165–175 bpm</strong><br>
-      → Monkey bar traverse + 8 dips + 8 burpees<br>
-      → 60 sec rest<br><br>
-      <em>~2km running + bodyweight. 45 min.</em>
-    </div></div>
-    <div class="dl"><div class="dl-label">Key</div><div class="dl-content">Arrive at the obstacle at <strong>165+ bpm</strong> on purpose. Go straight into it. That's the race — train the transition, not just the obstacle.</div></div>
-  </div>
-</div>
+			<div class="day run" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 13</div>
+						<div class="day-dow">Tuesday</div>
+					</div>
+					<div>
+						<div class="day-title">Last Hard Run — Tempo</div>
+						<div class="day-sub">
+							Semester 1 Life Coach 6PM — day mostly free
+						</div>
+					</div>
+					<div class="badge b-run">Run</div>
+				</div>
+				<div class="day-detail">
+					<div class="timing-note">Target: 9:00–10:15AM</div>
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							15 min easy warm-up — under <strong>116 bpm</strong>.<br />
+							<strong>25 min at 5:00–5:30/km pace.</strong> Same as May 6. You
+							should feel stronger at it now — HR will be the same or lower for
+							the same pace. That's the adaptation.<br />
+							10 min cool-down. <em>Total ~8km, ~50 min.</em>
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">After this session</div>
+						<div class="dl-content">
+							Done with hard running. Everything from here is maintenance and
+							prep. Trust the work.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day run" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 13</div><div class="day-dow">Tuesday</div></div>
-    <div><div class="day-title">Last Hard Run — Tempo</div><div class="day-sub">Semester 1 Life Coach 6PM — day mostly free</div></div>
-    <div class="badge b-run">Run</div>
-  </div>
-  <div class="day-detail">
-    <div class="timing-note">Target: 9:00–10:15AM</div>
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      15 min easy warm-up — under <strong>116 bpm</strong>.<br>
-      <strong>25 min at 5:00–5:30/km pace.</strong> Same as May 6. You should feel stronger at it now — HR will be the same or lower for the same pace. That's the adaptation.<br>
-      10 min cool-down. <em>Total ~8km, ~50 min.</em>
-    </div></div>
-    <div class="dl"><div class="dl-label">After this session</div><div class="dl-content">Done with hard running. Everything from here is maintenance and prep. Trust the work.</div></div>
-  </div>
-</div>
+			<div class="day recovery" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 14</div>
+						<div class="day-dow">Wednesday</div>
+					</div>
+					<div>
+						<div class="day-title">Taper — Movement Only</div>
+						<div class="day-sub">ICF Mentoring 11AM · Semester 2 8PM</div>
+					</div>
+					<div class="badge b-rest">Taper</div>
+				</div>
+				<div class="day-detail">
+					<div class="dl">
+						<div class="dl-label">Session</div>
+						<div class="dl-content">
+							20 min easy jog — hard cap at <strong>116 bpm</strong> the entire
+							time.<br />
+							15 min dynamic mobility: leg swings, hip circles, arm circles,
+							thoracic rotation.<br />
+							2 × monkey bar traverse easy — feel the grip, nothing more.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Rule</div>
+						<div class="dl-content">
+							Any effort above 116 bpm today costs you on Saturday. Muscles
+							repairing, glycogen loading. Stay easy.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day recovery" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 14</div><div class="day-dow">Wednesday</div></div>
-    <div><div class="day-title">Taper — Movement Only</div><div class="day-sub">ICF Mentoring 11AM · Semester 2 8PM</div></div>
-    <div class="badge b-rest">Taper</div>
-  </div>
-  <div class="day-detail">
-    <div class="dl"><div class="dl-label">Session</div><div class="dl-content">
-      20 min easy jog — hard cap at <strong>116 bpm</strong> the entire time.<br>
-      15 min dynamic mobility: leg swings, hip circles, arm circles, thoracic rotation.<br>
-      2 × monkey bar traverse easy — feel the grip, nothing more.
-    </div></div>
-    <div class="dl"><div class="dl-label">Rule</div><div class="dl-content">Any effort above 116 bpm today costs you on Saturday. Muscles repairing, glycogen loading. Stay easy.</div></div>
-  </div>
-</div>
+			<div class="day recovery" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 15</div>
+						<div class="day-dow">Thursday</div>
+					</div>
+					<div>
+						<div class="day-title">Race Eve — Prep Only</div>
+						<div class="day-sub">
+							Travel → Apartmány Šetkova vila · Jindřichův Hradec
+						</div>
+					</div>
+					<div class="badge b-rest">Pre-Race</div>
+				</div>
+				<div class="day-detail">
+					<div class="dl">
+						<div class="dl-label">Physical</div>
+						<div class="dl-content">
+							10 min walk. 10 min mobility. Stay under
+							<strong>100 bpm</strong> — zero intensity.<br />
+							4–5 × 10-second strides: fast and relaxed, not sprinting.
+							Neurological activation only.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Logistics</div>
+						<div class="dl-content">
+							Pack tonight: race shoes, dry change, nutrition (Nutrition tab),
+							HR chest strap, Garmin charged.<br />
+							<strong>Largest meal at lunch.</strong> Light familiar dinner.
+							Sleep by 9:30PM target.<br />
+							3L+ water throughout the day. Electrolytes in the evening.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Mental</div>
+						<div class="dl-content">
+							You've done the work. Your only job today is to show up tomorrow
+							fresh and ready. Confidence is earned — you earned it.
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="day recovery" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 15</div><div class="day-dow">Thursday</div></div>
-    <div><div class="day-title">Race Eve — Prep Only</div><div class="day-sub">Travel → Apartmány Šetkova vila · Jindřichův Hradec</div></div>
-    <div class="badge b-rest">Pre-Race</div>
-  </div>
-  <div class="day-detail">
-    <div class="dl"><div class="dl-label">Physical</div><div class="dl-content">
-      10 min walk. 10 min mobility. Stay under <strong>100 bpm</strong> — zero intensity.<br>
-      4–5 × 10-second strides: fast and relaxed, not sprinting. Neurological activation only.
-    </div></div>
-    <div class="dl"><div class="dl-label">Logistics</div><div class="dl-content">
-      Pack tonight: race shoes, dry change, nutrition (Nutrition tab), HR chest strap, Garmin charged.<br>
-      <strong>Largest meal at lunch.</strong> Light familiar dinner. Sleep by 9:30PM target.<br>
-      3L+ water throughout the day. Electrolytes in the evening.
-    </div></div>
-    <div class="dl"><div class="dl-label">Mental</div><div class="dl-content">You've done the work. Your only job today is to show up tomorrow fresh and ready. Confidence is earned — you earned it.</div></div>
-  </div>
-</div>
+			<div class="day race" onclick="toggle(this)">
+				<div class="day-header">
+					<div>
+						<div class="day-date">May 16</div>
+						<div class="day-dow">Friday</div>
+					</div>
+					<div>
+						<div class="day-title">🏁 OCR Lev — Race Day</div>
+						<div class="day-sub">
+							Jindřichův Hradec · Military Base · Anetka's Name Day
+						</div>
+					</div>
+					<div class="badge b-race">Race</div>
+				</div>
+				<div class="day-detail">
+					<div class="dl">
+						<div class="dl-label">Warm-up (20 min before start)</div>
+						<div class="dl-content">
+							5 min easy jog → dynamic mobility (leg swings, hip openers, arm
+							circles) → 3 × 100m build-up strides → shake out. HR elevated,
+							body warm, nothing taxed.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Race Execution</div>
+						<div class="dl-content">
+							<strong>First 1km:</strong> Adrenaline will push you to 170+
+							immediately. Let it pass, settle to <strong>155–165 bpm</strong>.
+							Running at 175 in the first km kills your last 3km.<br /><br />
+							<strong>Between obstacles:</strong> Cruise at
+							<strong>155–165 bpm</strong>. You've trained here for 10 days.
+							It's familiar now.<br /><br />
+							<strong>Into obstacles:</strong> Don't brake early. Arrive fast,
+							breathe once, execute.<br /><br />
+							<strong>Out of obstacles:</strong>
+							<em>Accelerate immediately.</em> Back to
+							<strong>155+ bpm</strong> within 15 seconds. This is your trained
+							edge — most people jog it off. You don't.<br /><br />
+							<strong>Last 2km:</strong> If HR is under <strong>170</strong>,
+							you've been conservative — open it up now.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Final km</div>
+						<div class="dl-content">
+							Get to <strong>175+ bpm</strong> and hold it to the line. You
+							trained to have something here. Use all of it.
+						</div>
+					</div>
+					<div class="dl">
+						<div class="dl-label">Target vs Last Year</div>
+						<div class="dl-content">
+							Last year: 1:14:08 total · 6:28/km moving · never sprinted ·
+							finished with juice.<br />Today:
+							<em
+								>sub-5:30/km moving pace · sub-63 min total · nothing left at
+								the finish.</em
+							>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<div class="day race" onclick="toggle(this)">
-  <div class="day-header">
-    <div><div class="day-date">May 16</div><div class="day-dow">Friday</div></div>
-    <div><div class="day-title">🏁 OCR Lev — Race Day</div><div class="day-sub">Jindřichův Hradec · Military Base · Anetka's Name Day</div></div>
-    <div class="badge b-race">Race</div>
-  </div>
-  <div class="day-detail">
-    <div class="dl"><div class="dl-label">Warm-up (20 min before start)</div><div class="dl-content">
-      5 min easy jog → dynamic mobility (leg swings, hip openers, arm circles) → 3 × 100m build-up strides → shake out. HR elevated, body warm, nothing taxed.
-    </div></div>
-    <div class="dl"><div class="dl-label">Race Execution</div><div class="dl-content">
-      <strong>First 1km:</strong> Adrenaline will push you to 170+ immediately. Let it pass, settle to <strong>155–165 bpm</strong>. Running at 175 in the first km kills your last 3km.<br><br>
-      <strong>Between obstacles:</strong> Cruise at <strong>155–165 bpm</strong>. You've trained here for 10 days. It's familiar now.<br><br>
-      <strong>Into obstacles:</strong> Don't brake early. Arrive fast, breathe once, execute.<br><br>
-      <strong>Out of obstacles:</strong> <em>Accelerate immediately.</em> Back to <strong>155+ bpm</strong> within 15 seconds. This is your trained edge — most people jog it off. You don't.<br><br>
-      <strong>Last 2km:</strong> If HR is under <strong>170</strong>, you've been conservative — open it up now.
-    </div></div>
-    <div class="dl"><div class="dl-label">Final km</div><div class="dl-content">Get to <strong>175+ bpm</strong> and hold it to the line. You trained to have something here. Use all of it.</div></div>
-    <div class="dl"><div class="dl-label">Target vs Last Year</div><div class="dl-content">Last year: 1:14:08 total · 6:28/km moving · never sprinted · finished with juice.<br>Today: <em>sub-5:30/km moving pace · sub-63 min total · nothing left at the finish.</em></div></div>
-  </div>
-</div>
-</div>
+		<div id="nutrition" class="panel">
+			<div class="nut-section">
+				<div class="nt">Daily Baseline <span>— Every Day</span></div>
+				<div class="nut-grid">
+					<div class="nut-card">
+						<div class="nut-card-title">Protein</div>
+						<div class="nut-row">
+							<strong>Target: 1.8–2.2g per kg bodyweight</strong>
+						</div>
+						<div class="nut-row">
+							Every meal has a protein anchor. Non-negotiable.
+						</div>
+						<div class="nut-row">
+							Eggs, chicken, Greek yogurt, cottage cheese, fish, beef.
+						</div>
+						<div class="nut-row">
+							Creatine 5g daily — keep your habit straight through race day.
+						</div>
+					</div>
+					<div class="nut-card">
+						<div class="nut-card-title">Carbohydrates</div>
+						<div class="nut-row"><strong>Fuel — do not cut these.</strong></div>
+						<div class="nut-row">Oats, rice, potatoes, fruit, sourdough.</div>
+						<div class="nut-row">
+							Larger portions on hard days (May 4, 7, 9, 11, 13).
+						</div>
+						<div class="nut-row">
+							Lighter on recovery days — same protein, less starch.
+						</div>
+					</div>
+					<div class="nut-card">
+						<div class="nut-card-title">Fats</div>
+						<div class="nut-row">Moderate, whole-food based.</div>
+						<div class="nut-row">Avocado, olive oil, nuts, eggs.</div>
+						<div class="nut-row">
+							<strong>No heavy fat meals within 3hrs of training.</strong>
+						</div>
+					</div>
+					<div class="nut-card">
+						<div class="nut-card-title">Hydration</div>
+						<div class="nut-row">
+							<strong>2.5–3L water daily minimum.</strong>
+						</div>
+						<div class="nut-row">
+							Add electrolytes on hard days — pinch of salt per bottle.
+						</div>
+						<div class="nut-row">
+							Urine pale yellow = on track. Dark = behind.
+						</div>
+						<div class="nut-row">
+							<strong>No alcohol for 13 days.</strong> Kills sleep quality
+							measurably.
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="nut-section">
+				<div class="nt">Training Day Timing <span>— Hard Sessions</span></div>
+				<div class="nut-card">
+					<div class="nut-card-title">Pre-Session (90–60 min before)</div>
+					<div class="nut-row">
+						<strong>Option A:</strong> Oats + banana + honey + eggs or whey.
+						~60g carbs, 20g protein.
+					</div>
+					<div class="nut-row">
+						<strong>Option B (early starts):</strong> Banana + dates + black
+						coffee. Train light, eat properly after.
+					</div>
+					<div class="nut-row">
+						No large meals within 60 min of intense running.
+					</div>
+				</div>
+				<div class="nut-card">
+					<div class="nut-card-title">Post-Session (within 45 min)</div>
+					<div class="nut-row">
+						<strong>Protein + fast carbs. Every time.</strong>
+					</div>
+					<div class="nut-row">
+						Greek yogurt + fruit + honey · chicken + rice · protein shake +
+						banana.
+					</div>
+					<div class="nut-row">
+						This window is where recovery happens. Don't skip it.
+					</div>
+				</div>
+			</div>
+			<div class="nut-section">
+				<div class="nt">Race Week <span>— May 13–16</span></div>
+				<div class="nut-card">
+					<div class="nut-card-title">May 13–14: Carb Build</div>
+					<div class="nut-row">
+						Increase carbs moderately. Potatoes, rice, pasta, bread.
+					</div>
+					<div class="nut-row">
+						Topping up glycogen — not gorging. Keep protein high.
+					</div>
+					<div class="nut-row">
+						No new foods. Nothing your gut doesn't already know.
+					</div>
+				</div>
+				<div class="nut-card">
+					<div class="nut-card-title">May 15 — Race Eve</div>
+					<div class="nut-row">
+						<strong>Big lunch:</strong> Pasta or rice + protein + vegetables.
+						Main fuel load.
+					</div>
+					<div class="nut-row">
+						<strong>Dinner:</strong> Light, familiar, easy to digest. Chicken +
+						rice.
+					</div>
+					<div class="nut-row">
+						3L water. Electrolytes in the evening. No alcohol.
+					</div>
+				</div>
+				<div class="race-day-box">
+					<div class="nut-card-title">⚡ May 16 — Race Morning</div>
+					<div class="nut-row">
+						<strong>2–2.5hrs before start:</strong> Oats + banana + honey +
+						black coffee. ~500kcal.
+					</div>
+					<div class="nut-row">
+						<strong>30 min before:</strong> Small banana or 3–4 dates. Quick
+						carbs only.
+					</div>
+					<div class="nut-row">
+						<strong>Caffeine:</strong> 1 strong coffee 45–60 min before start.
+					</div>
+					<div class="nut-row">
+						<strong>During:</strong> 1 gel or handful of dates at halfway if you
+						feel flat.
+					</div>
+					<div class="nut-row">
+						<strong>Water stations:</strong> Small sips, not gulps mid-run.
+					</div>
+				</div>
+			</div>
+		</div>
 
-<div id="nutrition" class="panel">
-<div class="nut-section">
-  <div class="nt">Daily Baseline <span>— Every Day</span></div>
-  <div class="nut-grid">
-    <div class="nut-card">
-      <div class="nut-card-title">Protein</div>
-      <div class="nut-row"><strong>Target: 1.8–2.2g per kg bodyweight</strong></div>
-      <div class="nut-row">Every meal has a protein anchor. Non-negotiable.</div>
-      <div class="nut-row">Eggs, chicken, Greek yogurt, cottage cheese, fish, beef.</div>
-      <div class="nut-row">Creatine 5g daily — keep your habit straight through race day.</div>
-    </div>
-    <div class="nut-card">
-      <div class="nut-card-title">Carbohydrates</div>
-      <div class="nut-row"><strong>Fuel — do not cut these.</strong></div>
-      <div class="nut-row">Oats, rice, potatoes, fruit, sourdough.</div>
-      <div class="nut-row">Larger portions on hard days (May 4, 7, 9, 11, 13).</div>
-      <div class="nut-row">Lighter on recovery days — same protein, less starch.</div>
-    </div>
-    <div class="nut-card">
-      <div class="nut-card-title">Fats</div>
-      <div class="nut-row">Moderate, whole-food based.</div>
-      <div class="nut-row">Avocado, olive oil, nuts, eggs.</div>
-      <div class="nut-row"><strong>No heavy fat meals within 3hrs of training.</strong></div>
-    </div>
-    <div class="nut-card">
-      <div class="nut-card-title">Hydration</div>
-      <div class="nut-row"><strong>2.5–3L water daily minimum.</strong></div>
-      <div class="nut-row">Add electrolytes on hard days — pinch of salt per bottle.</div>
-      <div class="nut-row">Urine pale yellow = on track. Dark = behind.</div>
-      <div class="nut-row"><strong>No alcohol for 13 days.</strong> Kills sleep quality measurably.</div>
-    </div>
-  </div>
-</div>
-<div class="nut-section">
-  <div class="nt">Training Day Timing <span>— Hard Sessions</span></div>
-  <div class="nut-card">
-    <div class="nut-card-title">Pre-Session (90–60 min before)</div>
-    <div class="nut-row"><strong>Option A:</strong> Oats + banana + honey + eggs or whey. ~60g carbs, 20g protein.</div>
-    <div class="nut-row"><strong>Option B (early starts):</strong> Banana + dates + black coffee. Train light, eat properly after.</div>
-    <div class="nut-row">No large meals within 60 min of intense running.</div>
-  </div>
-  <div class="nut-card">
-    <div class="nut-card-title">Post-Session (within 45 min)</div>
-    <div class="nut-row"><strong>Protein + fast carbs. Every time.</strong></div>
-    <div class="nut-row">Greek yogurt + fruit + honey · chicken + rice · protein shake + banana.</div>
-    <div class="nut-row">This window is where recovery happens. Don't skip it.</div>
-  </div>
-</div>
-<div class="nut-section">
-  <div class="nt">Race Week <span>— May 13–16</span></div>
-  <div class="nut-card">
-    <div class="nut-card-title">May 13–14: Carb Build</div>
-    <div class="nut-row">Increase carbs moderately. Potatoes, rice, pasta, bread.</div>
-    <div class="nut-row">Topping up glycogen — not gorging. Keep protein high.</div>
-    <div class="nut-row">No new foods. Nothing your gut doesn't already know.</div>
-  </div>
-  <div class="nut-card">
-    <div class="nut-card-title">May 15 — Race Eve</div>
-    <div class="nut-row"><strong>Big lunch:</strong> Pasta or rice + protein + vegetables. Main fuel load.</div>
-    <div class="nut-row"><strong>Dinner:</strong> Light, familiar, easy to digest. Chicken + rice.</div>
-    <div class="nut-row">3L water. Electrolytes in the evening. No alcohol.</div>
-  </div>
-  <div class="race-day-box">
-    <div class="nut-card-title">⚡ May 16 — Race Morning</div>
-    <div class="nut-row"><strong>2–2.5hrs before start:</strong> Oats + banana + honey + black coffee. ~500kcal.</div>
-    <div class="nut-row"><strong>30 min before:</strong> Small banana or 3–4 dates. Quick carbs only.</div>
-    <div class="nut-row"><strong>Caffeine:</strong> 1 strong coffee 45–60 min before start.</div>
-    <div class="nut-row"><strong>During:</strong> 1 gel or handful of dates at halfway if you feel flat.</div>
-    <div class="nut-row"><strong>Water stations:</strong> Small sips, not gulps mid-run.</div>
-  </div>
-</div>
-</div>
+		<div id="recovery" class="panel">
+			<div class="rec-card">
+				<div class="rec-title">Sleep — Your #1 Recovery Tool</div>
+				<div class="rec-text">
+					<strong>7.5–8.5 hrs every night.</strong> Sleep is when your legs get
+					faster, not in the session.<br /><br />
+					After hard days (May 4, 7, 9, 11, 13): 8+ hrs the following night.
+					Non-negotiable. Adaptation happens here.<br /><br />
+					<strong>Race week:</strong> May 14 night matters more than May 15
+					night. Bank sleep on the 14th. Pre-race restlessness on the 15th is
+					normal.
+				</div>
+			</div>
+			<div class="rec-card">
+				<div class="rec-title">Post-Run Protocol — Every Session</div>
+				<div class="rec-text">
+					<strong>Within 5 min of finishing:</strong> Walk — don't stop dead. HR
+					down over 5 min of movement.<br /><br />
+					<strong>Stretch minimum 10 min:</strong> Hip flexors 90 sec each ·
+					Hamstrings 60 sec each · Calf/Achilles 60 sec each · Thoracic rotation
+					10 reps each side.<br /><br />
+					<strong>Cold shower:</strong> 2–3 min cold after hard sessions.
+					Reduces inflammation, speeds tissue recovery.
+				</div>
+			</div>
+			<div class="rec-card">
+				<div class="rec-title">Legs Management</div>
+				<div class="rec-text">
+					<strong>Foam roll daily:</strong> Calves, quads, IT band. 5 min before
+					bed on training days.<br /><br />
+					<strong>Legs-up-the-wall:</strong> 10 min after long runs (May 4, 7,
+					11, 13). Drains fluid, accelerates recovery.<br /><br />
+					<strong>Warning signs:</strong> Shin splints, knee tracking issues,
+					sharp calf tightness — back off immediately. 90% healthy beats 100%
+					injured.
+				</div>
+			</div>
+			<div class="rec-card">
+				<div class="rec-title">Nervous System</div>
+				<div class="rec-text">
+					Sprint work and plyometrics (May 5, 9) are CNS-intensive. You'll feel
+					muscularly fine but flat the next day — normal.<br /><br />
+					<strong>HRV on Garmin:</strong> If it drops 10+ points below your
+					baseline, treat that day as recovery regardless of the plan.
+				</div>
+			</div>
+			<div class="rec-card">
+				<div class="rec-title">Taper Week — May 14–15</div>
+				<div class="rec-text">
+					<strong>Taper paranoia is real.</strong> Heavy, slow, stiff legs =
+					glycogen loading. This is good. Do not add sessions to feel better —
+					worst thing you can do.<br /><br />
+					<strong>Stay off your feet May 15.</strong> Sit. Rest. Let the body
+					load.<br /><br />
+					<strong>Visualize:</strong> Arriving at obstacles at 165+ bpm and
+					going straight in. The acceleration out of each one. The last km at
+					175+.
+				</div>
+			</div>
+			<div class="warn">
+				⚠️ <strong>One rule above all:</strong> If something hurts — not burns,
+				not fatigues, <em>hurts</em> — stop. A niggle on Day 5 can become a DNS
+				on Day 13.
+			</div>
+		</div>
 
-<div id="recovery" class="panel">
-<div class="rec-card">
-  <div class="rec-title">Sleep — Your #1 Recovery Tool</div>
-  <div class="rec-text">
-    <strong>7.5–8.5 hrs every night.</strong> Sleep is when your legs get faster, not in the session.<br><br>
-    After hard days (May 4, 7, 9, 11, 13): 8+ hrs the following night. Non-negotiable. Adaptation happens here.<br><br>
-    <strong>Race week:</strong> May 14 night matters more than May 15 night. Bank sleep on the 14th. Pre-race restlessness on the 15th is normal.
-  </div>
-</div>
-<div class="rec-card">
-  <div class="rec-title">Post-Run Protocol — Every Session</div>
-  <div class="rec-text">
-    <strong>Within 5 min of finishing:</strong> Walk — don't stop dead. HR down over 5 min of movement.<br><br>
-    <strong>Stretch minimum 10 min:</strong> Hip flexors 90 sec each · Hamstrings 60 sec each · Calf/Achilles 60 sec each · Thoracic rotation 10 reps each side.<br><br>
-    <strong>Cold shower:</strong> 2–3 min cold after hard sessions. Reduces inflammation, speeds tissue recovery.
-  </div>
-</div>
-<div class="rec-card">
-  <div class="rec-title">Legs Management</div>
-  <div class="rec-text">
-    <strong>Foam roll daily:</strong> Calves, quads, IT band. 5 min before bed on training days.<br><br>
-    <strong>Legs-up-the-wall:</strong> 10 min after long runs (May 4, 7, 11, 13). Drains fluid, accelerates recovery.<br><br>
-    <strong>Warning signs:</strong> Shin splints, knee tracking issues, sharp calf tightness — back off immediately. 90% healthy beats 100% injured.
-  </div>
-</div>
-<div class="rec-card">
-  <div class="rec-title">Nervous System</div>
-  <div class="rec-text">
-    Sprint work and plyometrics (May 5, 9) are CNS-intensive. You'll feel muscularly fine but flat the next day — normal.<br><br>
-    <strong>HRV on Garmin:</strong> If it drops 10+ points below your baseline, treat that day as recovery regardless of the plan.
-  </div>
-</div>
-<div class="rec-card">
-  <div class="rec-title">Taper Week — May 14–15</div>
-  <div class="rec-text">
-    <strong>Taper paranoia is real.</strong> Heavy, slow, stiff legs = glycogen loading. This is good. Do not add sessions to feel better — worst thing you can do.<br><br>
-    <strong>Stay off your feet May 15.</strong> Sit. Rest. Let the body load.<br><br>
-    <strong>Visualize:</strong> Arriving at obstacles at 165+ bpm and going straight in. The acceleration out of each one. The last km at 175+.
-  </div>
-</div>
-<div class="warn">
-  ⚠️ <strong>One rule above all:</strong> If something hurts — not burns, not fatigues, <em>hurts</em> — stop. A niggle on Day 5 can become a DNS on Day 13.
-</div>
-</div>
-
-<script>
-function toggle(el){el.classList.toggle('open')}
-function showTab(id,btn){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-}
-</script>
-</body>
+		<script>
+			function toggle(el) {
+				el.classList.toggle("open");
+			}
+			function showTab(id, btn) {
+				document
+					.querySelectorAll(".panel")
+					.forEach((p) => p.classList.remove("active"));
+				document
+					.querySelectorAll(".tab")
+					.forEach((t) => t.classList.remove("active"));
+				document.getElementById(id).classList.add("active");
+				btn.classList.add("active");
+			}
+		</script>
+	</body>
 </html>
