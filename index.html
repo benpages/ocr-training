@@ -5,367 +5,338 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>OCR Race Plan — May 3→16</title>
 		<style>
-			@import url(https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap);
-			.header,
-			.tabs,
-			body {
-				background: #0d0d0d;
-			}
-			.day,
-			.tab {
-				cursor: pointer;
-			}
-			.day-date,
-			.header .meta,
-			.header h1,
-			.tab,
-			.week-sep {
-				text-transform: uppercase;
-				font-family: "Barlow Condensed", sans-serif;
-			}
-			* {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-			}
-			body {
-				color: #ddd;
-				font-family: Barlow, sans-serif;
-				font-size: 17px;
-			}
-			.header {
-				border-bottom: 3px solid #e63c1e;
-				padding: 22px 28px 16px;
-				position: sticky;
-				top: 0;
-				z-index: 100;
-			}
-			.header h1 {
-				font-weight: 900;
-				font-size: 36px;
-				letter-spacing: 0.05em;
-				color: #fff;
-			}
-			.header .meta {
-				font-weight: 600;
-				font-size: 15px;
-				letter-spacing: 0.15em;
-				color: #e63c1e;
-				margin-top: 4px;
-			}
-			.tabs {
-				display: flex;
-				gap: 0;
-				border-bottom: 1px solid #222;
-				padding: 0 28px;
-			}
-			.tab {
-				font-weight: 700;
-				font-size: 15px;
-				letter-spacing: 0.1em;
-				padding: 12px 20px;
-				border: none;
-				background: 0 0;
-				color: #555;
-				border-bottom: 3px solid transparent;
-				margin-bottom: -1px;
-				transition: 0.15s;
-			}
-			.tab:hover {
-				color: #aaa;
-			}
-			.tab.active {
-				color: #e63c1e;
-				border-bottom-color: #e63c1e;
-			}
-			.panel {
-				display: none;
-				padding: 24px 28px;
-				max-width: 860px;
-			}
-			.day.open .day-detail,
-			.panel.active {
-				display: block;
-			}
-			.week-sep {
-				font-weight: 900;
-				font-size: 13px;
-				letter-spacing: 0.25em;
-				color: #444;
-				margin: 24px 0 10px;
-				padding-bottom: 4px;
-				border-bottom: 1px solid #1a1a1a;
-			}
-			.day,
-			.dl-label {
-				margin-bottom: 6px;
-			}
-			.week-sep:first-child {
-				margin-top: 0;
-			}
-			.day {
-				background: #111;
-				border: 1px solid #1e1e1e;
-				border-left: 4px solid #1e1e1e;
-				transition:
-					background 0.12s,
-					border-left-color 0.12s;
-			}
-			.day:hover {
-				background: #151515;
-			}
-			.day.run {
-				border-left-color: #e63c1e;
-			}
-			.day.gym {
-				border-left-color: #2a7fff;
-			}
-			.day.mixed {
-				border-left-color: #f5a623;
-			}
-			.day.recovery {
-				border-left-color: #52b788;
-			}
-			.day.race {
-				border-left-color: gold;
-				background: #120f00;
-			}
-			.day-header {
-				display: grid;
-				grid-template-columns: 110px 1fr auto;
-				gap: 12px;
-				align-items: center;
-				padding: 14px 16px;
-			}
-			.day-date {
-				font-weight: 700;
-				font-size: 18px;
-				letter-spacing: 0.04em;
-				color: #fff;
-			}
-			.day-dow {
-				font-family: "Barlow Condensed", sans-serif;
-				font-weight: 600;
-				font-size: 13px;
-				color: #555;
-				text-transform: uppercase;
-				letter-spacing: 0.1em;
-				margin-top: 2px;
-			}
-			.badge,
-			.day-title,
-			.dl-label {
-				font-family: "Barlow Condensed", sans-serif;
-				font-weight: 700;
-				text-transform: uppercase;
-			}
-			.day-title {
-				font-size: 19px;
-				letter-spacing: 0.04em;
-				color: #e8e8e0;
-				line-height: 1.3;
-			}
-			.day-sub {
-				font-size: 14px;
-				color: #555;
-				margin-top: 3px;
-			}
-			.badge {
-				font-size: 12px;
-				letter-spacing: 0.1em;
-				padding: 4px 10px;
-				border-radius: 2px;
-				white-space: nowrap;
-			}
-			.b-run {
-				background: #1a0500;
-				color: #e63c1e;
-				border: 1px solid #300a00;
-			}
-			.b-gym {
-				background: #010d1f;
-				color: #4a9fff;
-				border: 1px solid #051830;
-			}
-			.b-mixed {
-				background: #130e00;
-				color: #f5a623;
-				border: 1px solid #251c00;
-			}
-			.b-rest {
-				background: #050d08;
-				color: #52b788;
-				border: 1px solid #0d2018;
-			}
-			.b-race,
-			.race-day-box .nut-card-title {
-				color: gold;
-			}
-			.b-race {
-				background: #1a1400;
-				border: 1px solid #3a3000;
-			}
-			.day-detail {
-				display: none;
-				padding: 0 16px 16px;
-				border-top: 1px solid #1e1e1e;
-			}
-			.dl {
-				margin-top: 14px;
-			}
-			.dl-label {
-				font-size: 13px;
-				letter-spacing: 0.18em;
-				color: #e63c1e;
-			}
-			.nt,
-			.timing-note {
-				letter-spacing: 0.08em;
-				font-family: "Barlow Condensed", sans-serif;
-			}
-			.dl-content {
-				font-size: 15px;
-				color: #999;
-				line-height: 1.75;
-			}
-			.dl-content strong {
-				color: #ddd;
-				font-weight: 600;
-			}
-			.dl-content em {
-				color: #f5a623;
-				font-style: normal;
-			}
-			.timing-note {
-				display: inline-block;
-				background: #1a0d00;
-				border: 1px solid #2a1a00;
-				color: #f5a623;
-				font-size: 13px;
-				font-weight: 600;
-				text-transform: uppercase;
-				padding: 3px 9px;
-				border-radius: 2px;
-				margin-top: 12px;
-				margin-bottom: 4px;
-			}
-			.nut-section {
-				margin-bottom: 26px;
-			}
-			.nt {
-				font-weight: 900;
-				font-size: 19px;
-				text-transform: uppercase;
-				color: #fff;
-				margin-bottom: 14px;
-				padding-bottom: 6px;
-				border-bottom: 2px solid #1e1e1e;
-			}
-			.hr-ref-title,
-			.nut-card-title,
-			.rec-title {
-				font-weight: 700;
-				text-transform: uppercase;
-			}
-			.nt span {
-				color: #e63c1e;
-			}
-			.nut-grid {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 12px;
-			}
-			.nut-card {
-				background: #111;
-				border: 1px solid #1e1e1e;
-				padding: 16px;
-				margin-bottom: 12px;
-			}
-			.nut-card-title {
-				font-family: "Barlow Condensed", sans-serif;
-				font-size: 14px;
-				letter-spacing: 0.15em;
-				color: #e63c1e;
-				margin-bottom: 10px;
-			}
-			.nut-row {
-				font-size: 15px;
-				color: #888;
-				padding: 5px 0;
-				border-bottom: 1px solid #181818;
-				line-height: 1.6;
-			}
-			.hr-row span:last-child,
-			.rec-title {
-				color: #ddd;
-				font-family: "Barlow Condensed", sans-serif;
-			}
-			.hr-row:last-child,
-			.nut-row:last-child {
-				border: none;
-			}
-			.nut-row strong,
-			.rec-text strong {
-				color: #ccc;
-			}
-			.race-day-box {
-				background: #120f00;
-				border: 2px solid gold;
-				padding: 18px;
-				margin-top: 12px;
-			}
-			.rec-card {
-				background: #111;
-				border: 1px solid #1e1e1e;
-				border-left: 3px solid #52b788;
-				padding: 16px 18px;
-				margin-bottom: 10px;
-			}
-			.rec-title {
-				font-size: 16px;
-				letter-spacing: 0.08em;
-				margin-bottom: 6px;
-			}
-			.rec-text {
-				font-size: 15px;
-				color: #888;
-				line-height: 1.75;
-			}
-			.warn {
-				background: #1a0900;
-				border: 1px solid #3a1800;
-				padding: 12px 16px;
-				font-size: 15px;
-				color: #f5a623;
-				line-height: 1.7;
-				margin-top: 14px;
-				border-radius: 2px;
-			}
-			.hr-ref {
-				background: #0d1a0d;
-				border: 1px solid #1a3a1a;
-				padding: 14px 18px;
-				margin-bottom: 18px;
-			}
-			.hr-ref-title {
-				font-family: "Barlow Condensed", sans-serif;
-				font-size: 13px;
-				letter-spacing: 0.2em;
-				color: #52b788;
-				margin-bottom: 10px;
-			}
-			.hr-row {
-				display: flex;
-				justify-content: space-between;
-				font-size: 14px;
-				color: #888;
-				padding: 4px 0;
-				border-bottom: 1px solid #141a14;
-			}
-			.hr-row span:last-child {
-				font-weight: 600;
-				font-size: 15px;
-			}
+			@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#0d0d0d;
+  color:#ddd;
+  font-family:'Barlow',sans-serif;
+  font-size:18px;
+}
+
+.header{
+  background:#0d0d0d;
+  border-bottom:3px solid #e63c1e;
+  padding:22px 28px 16px;
+  position:sticky;
+  top:0;
+  z-index:100
+}
+
+.header h1{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-size:38px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:#fff
+}
+
+.header .meta{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-size:18px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:#e63c1e;
+  margin-top:4px
+}
+
+.tabs{
+  display:flex;
+  gap:0;
+  background:#0d0d0d;
+  border-bottom:1px solid #222;
+  padding:0 28px
+}
+
+.tab{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:18px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:12px 20px;
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  color:#555;
+  border-bottom:3px solid transparent;
+  margin-bottom:-1px;
+  transition:all .15s
+}
+
+.tab:hover{color:#aaa}
+.tab.active{color:#e63c1e;border-bottom-color:#e63c1e}
+
+.panel{
+  display:none;
+  padding:24px 28px;
+  max-width:860px
+}
+.panel.active{display:block}
+
+.week-sep{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-size:16px;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  color:#444;
+  margin:24px 0 10px;
+  padding-bottom:4px;
+  border-bottom:1px solid #1a1a1a
+}
+.week-sep:first-child{margin-top:0}
+
+.day{
+  background:#111;
+  border:1px solid #1e1e1e;
+  border-left:4px solid #1e1e1e;
+  margin-bottom:6px;
+  cursor:pointer;
+  transition:background .12s,border-left-color .12s
+}
+
+.day:hover{background:#151515}
+.day.run{border-left-color:#e63c1e}
+.day.gym{border-left-color:#2a7fff}
+.day.mixed{border-left-color:#f5a623}
+.day.recovery{border-left-color:#52b788}
+.day.race{border-left-color:#ffd700;background:#120f00}
+
+.day-header{
+  display:grid;
+  grid-template-columns:110px 1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:14px 16px
+}
+
+.day-date{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:20px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  color:#fff
+}
+
+.day-dow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-size:16px;
+  color:#555;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  margin-top:2px
+}
+
+.day-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:22px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  color:#e8e8e0;
+  line-height:1.3
+}
+
+.day-sub{
+  font-size:16px;
+  color:#555;
+  margin-top:3px
+}
+
+.badge{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:4px 10px;
+  border-radius:2px;
+  white-space:nowrap
+}
+
+.b-run{background:#1a0500;color:#e63c1e;border:1px solid #300a00}
+.b-gym{background:#010d1f;color:#4a9fff;border:1px solid #051830}
+.b-mixed{background:#130e00;color:#f5a623;border:1px solid #251c00}
+.b-rest{background:#050d08;color:#52b788;border:1px solid #0d2018}
+.b-race{background:#1a1400;color:#ffd700;border:1px solid #3a3000}
+
+.day-detail{
+  display:none;
+  padding:0 16px 16px;
+  border-top:1px solid #1e1e1e
+}
+.day.open .day-detail{display:block}
+
+.dl{margin-top:14px}
+
+.dl-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#e63c1e;
+  margin-bottom:6px
+}
+
+.dl-content{
+  font-size:17px;
+  color:#999;
+  line-height:1.75
+}
+
+.dl-content strong{color:#ddd;font-weight:600}
+.dl-content em{color:#f5a623;font-style:normal}
+
+.timing-note{
+  display:inline-block;
+  background:#1a0d00;
+  border:1px solid #2a1a00;
+  color:#f5a623;
+  font-size:16px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:3px 9px;
+  border-radius:2px;
+  margin-top:12px;
+  margin-bottom:4px
+}
+
+.nut-section{margin-bottom:26px}
+
+.nt{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-size:22px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#fff;
+  margin-bottom:14px;
+  padding-bottom:6px;
+  border-bottom:2px solid #1e1e1e
+}
+
+.nt span{color:#e63c1e}
+
+.nut-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+
+.nut-card{
+  background:#111;
+  border:1px solid #1e1e1e;
+  padding:16px;
+  margin-bottom:12px
+}
+
+.nut-card-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:#e63c1e;
+  margin-bottom:10px
+}
+
+.nut-row{
+  font-size:17px;
+  color:#888;
+  padding:5px 0;
+  border-bottom:1px solid #181818;
+  line-height:1.6
+}
+.nut-row:last-child{border:none}
+.nut-row strong{color:#ccc}
+
+.race-day-box{
+  background:#120f00;
+  border:2px solid #ffd700;
+  padding:18px;
+  margin-top:12px
+}
+.race-day-box .nut-card-title{color:#ffd700}
+
+.rec-card{
+  background:#111;
+  border:1px solid #1e1e1e;
+  border-left:3px solid #52b788;
+  padding:16px 18px;
+  margin-bottom:10px
+}
+
+.rec-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:18px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#ddd;
+  margin-bottom:6px
+}
+
+.rec-text{
+  font-size:17px;
+  color:#888;
+  line-height:1.75
+}
+.rec-text strong{color:#ccc}
+
+.warn{
+  background:#1a0900;
+  border:1px solid #3a1800;
+  padding:12px 16px;
+  font-size:17px;
+  color:#f5a623;
+  line-height:1.7;
+  margin-top:14px;
+  border-radius:2px
+}
+
+.hr-ref{
+  background:#0d1a0d;
+  border:1px solid #1a3a1a;
+  padding:14px 18px;
+  margin-bottom:18px
+}
+
+.hr-ref-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:#52b788;
+  margin-bottom:10px
+}
+
+.hr-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:16px;
+  color:#888;
+  padding:4px 0;
+  border-bottom:1px solid #141a14
+}
+.hr-row:last-child{border:none}
+
+.hr-row span:last-child{
+  color:#ddd;
+  font-weight:600;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:17px
+}
 		</style>
 	</head>
 	<body>
