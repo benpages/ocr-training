@@ -5,338 +5,388 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>OCR Race Plan — May 3→16</title>
 		<style>
-			@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+			@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap");
 
-*{margin:0;padding:0;box-sizing:border-box}
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
 
-body{
-  background:#0d0d0d;
-  color:#ddd;
-  font-family:'Barlow',sans-serif;
-  font-size:18px;
-}
+			body {
+				background: #0d0d0d;
+				color: #ddd;
+				font-family: "Barlow", sans-serif;
+				font-size: 18px;
+			}
 
-.header{
-  background:#0d0d0d;
-  border-bottom:3px solid #e63c1e;
-  padding:22px 28px 16px;
-  position:sticky;
-  top:0;
-  z-index:100
-}
+			.header {
+				background: #0d0d0d;
+				border-bottom: 3px solid #e63c1e;
+				padding: 22px 28px 16px;
+				position: sticky;
+				top: 0;
+				z-index: 100;
+			}
 
-.header h1{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:900;
-  font-size:38px;
-  text-transform:uppercase;
-  letter-spacing:.05em;
-  color:#fff
-}
+			.header h1 {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 900;
+				font-size: 38px;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				color: #fff;
+			}
 
-.header .meta{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:600;
-  font-size:18px;
-  letter-spacing:.15em;
-  text-transform:uppercase;
-  color:#e63c1e;
-  margin-top:4px
-}
+			.header .meta {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 600;
+				font-size: 18px;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				color: #e63c1e;
+				margin-top: 4px;
+			}
 
-.tabs{
-  display:flex;
-  gap:0;
-  background:#0d0d0d;
-  border-bottom:1px solid #222;
-  padding:0 28px
-}
+			.tabs {
+				display: flex;
+				gap: 0;
+				background: #0d0d0d;
+				border-bottom: 1px solid #222;
+				padding: 0 28px;
+			}
 
-.tab{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;
-  font-size:18px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  padding:12px 20px;
-  cursor:pointer;
-  border:none;
-  background:transparent;
-  color:#555;
-  border-bottom:3px solid transparent;
-  margin-bottom:-1px;
-  transition:all .15s
-}
+			.tab {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 700;
+				font-size: 18px;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				padding: 12px 20px;
+				cursor: pointer;
+				border: none;
+				background: transparent;
+				color: #555;
+				border-bottom: 3px solid transparent;
+				margin-bottom: -1px;
+				transition: all 0.15s;
+			}
 
-.tab:hover{color:#aaa}
-.tab.active{color:#e63c1e;border-bottom-color:#e63c1e}
+			.tab:hover {
+				color: #aaa;
+			}
+			.tab.active {
+				color: #e63c1e;
+				border-bottom-color: #e63c1e;
+			}
 
-.panel{
-  display:none;
-  padding:24px 28px;
-  max-width:860px
-}
-.panel.active{display:block}
+			.panel {
+				display: none;
+				padding: 24px 28px;
+				max-width: 860px;
+			}
+			.panel.active {
+				display: block;
+			}
 
-.week-sep{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:900;
-  font-size:16px;
-  letter-spacing:.25em;
-  text-transform:uppercase;
-  color:#444;
-  margin:24px 0 10px;
-  padding-bottom:4px;
-  border-bottom:1px solid #1a1a1a
-}
-.week-sep:first-child{margin-top:0}
+			.week-sep {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 900;
+				font-size: 16px;
+				letter-spacing: 0.25em;
+				text-transform: uppercase;
+				color: #444;
+				margin: 24px 0 10px;
+				padding-bottom: 4px;
+				border-bottom: 1px solid #1a1a1a;
+			}
+			.week-sep:first-child {
+				margin-top: 0;
+			}
 
-.day{
-  background:#111;
-  border:1px solid #1e1e1e;
-  border-left:4px solid #1e1e1e;
-  margin-bottom:6px;
-  cursor:pointer;
-  transition:background .12s,border-left-color .12s
-}
+			.day {
+				background: #111;
+				border: 1px solid #1e1e1e;
+				border-left: 4px solid #1e1e1e;
+				margin-bottom: 6px;
+				cursor: pointer;
+				transition:
+					background 0.12s,
+					border-left-color 0.12s;
+			}
 
-.day:hover{background:#151515}
-.day.run{border-left-color:#e63c1e}
-.day.gym{border-left-color:#2a7fff}
-.day.mixed{border-left-color:#f5a623}
-.day.recovery{border-left-color:#52b788}
-.day.race{border-left-color:#ffd700;background:#120f00}
+			.day:hover {
+				background: #151515;
+			}
+			.day.run {
+				border-left-color: #e63c1e;
+			}
+			.day.gym {
+				border-left-color: #2a7fff;
+			}
+			.day.mixed {
+				border-left-color: #f5a623;
+			}
+			.day.recovery {
+				border-left-color: #52b788;
+			}
+			.day.race {
+				border-left-color: #ffd700;
+				background: #120f00;
+			}
 
-.day-header{
-  display:grid;
-  grid-template-columns:110px 1fr auto;
-  gap:12px;
-  align-items:center;
-  padding:14px 16px
-}
+			.day-header {
+				display: grid;
+				grid-template-columns: 110px 1fr auto;
+				gap: 12px;
+				align-items: center;
+				padding: 14px 16px;
+			}
 
-.day-date{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;
-  font-size:20px;
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  color:#fff
-}
+			.day-date {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 700;
+				font-size: 20px;
+				text-transform: uppercase;
+				letter-spacing: 0.04em;
+				color: #fff;
+			}
 
-.day-dow{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:600;
-  font-size:16px;
-  color:#555;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  margin-top:2px
-}
+			.day-dow {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 600;
+				font-size: 16px;
+				color: #555;
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+				margin-top: 2px;
+			}
 
-.day-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;
-  font-size:22px;
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  color:#e8e8e0;
-  line-height:1.3
-}
+			.day-title {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 700;
+				font-size: 22px;
+				text-transform: uppercase;
+				letter-spacing: 0.04em;
+				color: #e8e8e0;
+				line-height: 1.3;
+			}
 
-.day-sub{
-  font-size:16px;
-  color:#555;
-  margin-top:3px
-}
+			.badge {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 700;
+				font-size: 16px;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				padding: 4px 10px;
+				border-radius: 2px;
+				white-space: nowrap;
+			}
 
-.badge{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;
-  font-size:16px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  padding:4px 10px;
-  border-radius:2px;
-  white-space:nowrap
-}
+			.b-run {
+				background: #1a0500;
+				color: #e63c1e;
+				border: 1px solid #300a00;
+			}
+			.b-gym {
+				background: #010d1f;
+				color: #4a9fff;
+				border: 1px solid #051830;
+			}
+			.b-mixed {
+				background: #130e00;
+				color: #f5a623;
+				border: 1px solid #251c00;
+			}
+			.b-rest {
+				background: #050d08;
+				color: #52b788;
+				border: 1px solid #0d2018;
+			}
+			.b-race {
+				background: #1a1400;
+				color: #ffd700;
+				border: 1px solid #3a3000;
+			}
 
-.b-run{background:#1a0500;color:#e63c1e;border:1px solid #300a00}
-.b-gym{background:#010d1f;color:#4a9fff;border:1px solid #051830}
-.b-mixed{background:#130e00;color:#f5a623;border:1px solid #251c00}
-.b-rest{background:#050d08;color:#52b788;border:1px solid #0d2018}
-.b-race{background:#1a1400;color:#ffd700;border:1px solid #3a3000}
+			.day-detail {
+				display: none;
+				padding: 0 16px 16px;
+				border-top: 1px solid #1e1e1e;
+			}
+			.day.open .day-detail {
+				display: block;
+			}
 
-.day-detail{
-  display:none;
-  padding:0 16px 16px;
-  border-top:1px solid #1e1e1e
-}
-.day.open .day-detail{display:block}
+			.dl {
+				margin-top: 14px;
+			}
 
-.dl{margin-top:14px}
+			.dl-label {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 700;
+				font-size: 16px;
+				letter-spacing: 0.18em;
+				text-transform: uppercase;
+				color: #e63c1e;
+				margin-bottom: 6px;
+			}
 
-.dl-label{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;
-  font-size:16px;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  color:#e63c1e;
-  margin-bottom:6px
-}
+			.dl-content {
+				font-size: 17px;
+				color: #999;
+				line-height: 1.75;
+			}
 
-.dl-content{
-  font-size:17px;
-  color:#999;
-  line-height:1.75
-}
+			.dl-content strong {
+				color: #ddd;
+				font-weight: 600;
+			}
+			.dl-content em {
+				color: #f5a623;
+				font-style: normal;
+			}
 
-.dl-content strong{color:#ddd;font-weight:600}
-.dl-content em{color:#f5a623;font-style:normal}
+			.nut-section {
+				margin-bottom: 26px;
+			}
 
-.timing-note{
-  display:inline-block;
-  background:#1a0d00;
-  border:1px solid #2a1a00;
-  color:#f5a623;
-  font-size:16px;
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:600;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  padding:3px 9px;
-  border-radius:2px;
-  margin-top:12px;
-  margin-bottom:4px
-}
+			.nt {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 900;
+				font-size: 22px;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				color: #fff;
+				margin-bottom: 14px;
+				padding-bottom: 6px;
+				border-bottom: 2px solid #1e1e1e;
+			}
 
-.nut-section{margin-bottom:26px}
+			.nt span {
+				color: #e63c1e;
+			}
 
-.nt{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:900;
-  font-size:22px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  color:#fff;
-  margin-bottom:14px;
-  padding-bottom:6px;
-  border-bottom:2px solid #1e1e1e
-}
+			.nut-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 12px;
+			}
 
-.nt span{color:#e63c1e}
+			.nut-card {
+				background: #111;
+				border: 1px solid #1e1e1e;
+				padding: 16px;
+				margin-bottom: 12px;
+			}
 
-.nut-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px
-}
+			.nut-card-title {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 700;
+				font-size: 16px;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				color: #e63c1e;
+				margin-bottom: 10px;
+			}
 
-.nut-card{
-  background:#111;
-  border:1px solid #1e1e1e;
-  padding:16px;
-  margin-bottom:12px
-}
+			.nut-row {
+				font-size: 17px;
+				color: #888;
+				padding: 5px 0;
+				border-bottom: 1px solid #181818;
+				line-height: 1.6;
+			}
+			.nut-row:last-child {
+				border: none;
+			}
+			.nut-row strong {
+				color: #ccc;
+			}
 
-.nut-card-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;
-  font-size:16px;
-  letter-spacing:.15em;
-  text-transform:uppercase;
-  color:#e63c1e;
-  margin-bottom:10px
-}
+			.race-day-box {
+				background: #120f00;
+				border: 2px solid #ffd700;
+				padding: 18px;
+				margin-top: 12px;
+			}
+			.race-day-box .nut-card-title {
+				color: #ffd700;
+			}
 
-.nut-row{
-  font-size:17px;
-  color:#888;
-  padding:5px 0;
-  border-bottom:1px solid #181818;
-  line-height:1.6
-}
-.nut-row:last-child{border:none}
-.nut-row strong{color:#ccc}
+			.rec-card {
+				background: #111;
+				border: 1px solid #1e1e1e;
+				border-left: 3px solid #52b788;
+				padding: 16px 18px;
+				margin-bottom: 10px;
+			}
 
-.race-day-box{
-  background:#120f00;
-  border:2px solid #ffd700;
-  padding:18px;
-  margin-top:12px
-}
-.race-day-box .nut-card-title{color:#ffd700}
+			.rec-title {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 700;
+				font-size: 18px;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				color: #ddd;
+				margin-bottom: 6px;
+			}
 
-.rec-card{
-  background:#111;
-  border:1px solid #1e1e1e;
-  border-left:3px solid #52b788;
-  padding:16px 18px;
-  margin-bottom:10px
-}
+			.rec-text {
+				font-size: 17px;
+				color: #888;
+				line-height: 1.75;
+			}
+			.rec-text strong {
+				color: #ccc;
+			}
 
-.rec-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;
-  font-size:18px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  color:#ddd;
-  margin-bottom:6px
-}
+			.warn {
+				background: #1a0900;
+				border: 1px solid #3a1800;
+				padding: 12px 16px;
+				font-size: 17px;
+				color: #f5a623;
+				line-height: 1.7;
+				margin-top: 14px;
+				border-radius: 2px;
+			}
 
-.rec-text{
-  font-size:17px;
-  color:#888;
-  line-height:1.75
-}
-.rec-text strong{color:#ccc}
+			.hr-ref {
+				background: #0d1a0d;
+				border: 1px solid #1a3a1a;
+				padding: 14px 18px;
+				margin-bottom: 18px;
+			}
 
-.warn{
-  background:#1a0900;
-  border:1px solid #3a1800;
-  padding:12px 16px;
-  font-size:17px;
-  color:#f5a623;
-  line-height:1.7;
-  margin-top:14px;
-  border-radius:2px
-}
+			.hr-ref-title {
+				font-family: "Barlow Condensed", sans-serif;
+				font-weight: 700;
+				font-size: 16px;
+				letter-spacing: 0.2em;
+				text-transform: uppercase;
+				color: #52b788;
+				margin-bottom: 10px;
+			}
 
-.hr-ref{
-  background:#0d1a0d;
-  border:1px solid #1a3a1a;
-  padding:14px 18px;
-  margin-bottom:18px
-}
+			.hr-row {
+				display: flex;
+				justify-content: space-between;
+				font-size: 16px;
+				color: #888;
+				padding: 4px 0;
+				border-bottom: 1px solid #141a14;
+			}
+			.hr-row:last-child {
+				border: none;
+			}
 
-.hr-ref-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;
-  font-size:16px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  color:#52b788;
-  margin-bottom:10px
-}
-
-.hr-row{
-  display:flex;
-  justify-content:space-between;
-  font-size:16px;
-  color:#888;
-  padding:4px 0;
-  border-bottom:1px solid #141a14
-}
-.hr-row:last-child{border:none}
-
-.hr-row span:last-child{
-  color:#ddd;
-  font-weight:600;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:17px
-}
+			.hr-row span:last-child {
+				color: #ddd;
+				font-weight: 600;
+				font-family: "Barlow Condensed", sans-serif;
+				font-size: 17px;
+			}
 		</style>
 	</head>
 	<body>
@@ -384,12 +434,10 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Threshold Intervals — Baseline</div>
-						<div class="day-sub">Before 11AM meetings</div>
 					</div>
 					<div class="badge b-run">Run</div>
 				</div>
 				<div class="day-detail">
-					<div class="timing-note">Target: 7:30–9:30AM</div>
 					<div class="dl">
 						<div class="dl-label">Session</div>
 						<div class="dl-content">
@@ -427,12 +475,10 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Explosive Power + Grip Endurance</div>
-						<div class="day-sub">BTCTA 6PM — morning free</div>
 					</div>
 					<div class="badge b-gym">Gym</div>
 				</div>
 				<div class="day-detail">
-					<div class="timing-note">Target: 7:00–8:30AM</div>
 					<div class="dl">
 						<div class="dl-label">Session</div>
 						<div class="dl-content">
@@ -460,14 +506,10 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Tempo Run — Pace Guided</div>
-						<div class="day-sub">
-							LC 13-15 1PM · Peer Coaching 6PM — morning free
-						</div>
 					</div>
 					<div class="badge b-run">Run</div>
 				</div>
 				<div class="day-detail">
-					<div class="timing-note">Target: 8:00–9:15AM</div>
 					<div class="dl">
 						<div class="dl-label">Session</div>
 						<div class="dl-content">
@@ -497,12 +539,10 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Race Simulation Circuit</div>
-						<div class="day-sub">Full day available — The Money Session</div>
 					</div>
 					<div class="badge b-mixed">Mixed</div>
 				</div>
 				<div class="day-detail">
-					<div class="timing-note">Target: 9:00–10:15AM</div>
 					<div class="dl">
 						<div class="dl-label">Session — 2 Rounds</div>
 						<div class="dl-content">
@@ -551,7 +591,6 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Active Recovery</div>
-						<div class="day-sub">Full day — let Wednesday settle</div>
 					</div>
 					<div class="badge b-rest">Recovery</div>
 				</div>
@@ -585,12 +624,10 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Sprint Repeats + Hill Sim</div>
-						<div class="day-sub">Full day available</div>
 					</div>
 					<div class="badge b-run">Run</div>
 				</div>
 				<div class="day-detail">
-					<div class="timing-note">Target: 9:00–10:30AM</div>
 					<div class="dl">
 						<div class="dl-label">Session</div>
 						<div class="dl-content">
@@ -622,12 +659,10 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Strength + Carry Sim</div>
-						<div class="day-sub">Full day available</div>
 					</div>
 					<div class="badge b-gym">Gym</div>
 				</div>
 				<div class="day-detail">
-					<div class="timing-note">Target: 9:00–10:30AM</div>
 					<div class="dl">
 						<div class="dl-label">Session</div>
 						<div class="dl-content">
@@ -663,14 +698,10 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Threshold Intervals — Beat May 4</div>
-						<div class="day-sub">
-							NLP Live 11AM · Coaching 4:30PM · Peer Coaching 6PM — morning only
-						</div>
 					</div>
 					<div class="badge b-run">Run</div>
 				</div>
 				<div class="day-detail">
-					<div class="timing-note">Target: 7:30–9:15AM — hard stop</div>
 					<div class="dl">
 						<div class="dl-label">Session</div>
 						<div class="dl-content">
@@ -699,21 +730,17 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Short Obstacle Speed Circuit</div>
-						<div class="day-sub">
-							LC 13-15 ends 2PM · Krista Kathleen 6PM — 2–5PM free
-						</div>
 					</div>
 					<div class="badge b-mixed">Mixed</div>
 				</div>
 				<div class="day-detail">
-					<div class="timing-note">Target: 2:00–3:00PM</div>
 					<div class="dl">
 						<div class="dl-label">Session</div>
 						<div class="dl-content">
 							<strong>5 rounds:</strong><br />
 							→ 400m hard run — push to <strong>165–175 bpm</strong><br />
 							→ Monkey bar traverse + 8 dips + 8 burpees<br />
-							→ 60 sec rest<br /><br />
+							→ 90-120 sec rest<br /><br />
 							<em>~2km running + bodyweight. 45 min.</em>
 						</div>
 					</div>
@@ -736,14 +763,10 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Last Hard Run — Tempo</div>
-						<div class="day-sub">
-							Semester 1 Life Coach 6PM — day mostly free
-						</div>
 					</div>
 					<div class="badge b-run">Run</div>
 				</div>
 				<div class="day-detail">
-					<div class="timing-note">Target: 9:00–10:15AM</div>
 					<div class="dl">
 						<div class="dl-label">Session</div>
 						<div class="dl-content">
@@ -772,7 +795,6 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Taper — Movement Only</div>
-						<div class="day-sub">ICF Mentoring 11AM · Semester 2 8PM</div>
 					</div>
 					<div class="badge b-rest">Taper</div>
 				</div>
@@ -805,9 +827,6 @@ body{
 					</div>
 					<div>
 						<div class="day-title">Race Eve — Prep Only</div>
-						<div class="day-sub">
-							Travel → Apartmány Šetkova vila · Jindřichův Hradec
-						</div>
 					</div>
 					<div class="badge b-rest">Pre-Race</div>
 				</div>
@@ -849,9 +868,6 @@ body{
 					</div>
 					<div>
 						<div class="day-title">🏁 OCR Lev — Race Day</div>
-						<div class="day-sub">
-							Jindřichův Hradec · Military Base · Anetka's Name Day
-						</div>
 					</div>
 					<div class="badge b-race">Race</div>
 				</div>
